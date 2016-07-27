@@ -39,12 +39,20 @@ $group.add("WinNT://$env:ComputerName/$userName")
 $secPassword = ConvertTo-SecureString $password -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential("$env:COMPUTERNAME\$($username)", $secPassword)
 
+
 $command = ".\ChocolateyPackageInstaller.ps1"
 
+#$varia = '@{TrustedHosts="' +  $env:COMPUTERNAME + '"}' 
+winrm s winrm/config/client $'@{TrustedHosts="' +  $env:COMPUTERNAME + '"}' 
+#reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+#winrm quickconfig
+#$farmSvcAccSession = New-PSSession -Credential $credential;  
 # Run Chocolatey as the artifactInstaller user
-#Enable-PSRemoting –force
+Enable-PSRemoting –force
+#Start-Process powershell.exe -Credential $credential -FilePath $command -NoNewWindow -ArgumentList $packageList
+#Invoke-Command -Session $farmSvcAccSession -FilePath $command -ArgumentList $packageList
 Invoke-Command -FilePath $command -Credential $credential -ComputerName $env:COMPUTERNAME -ArgumentList $packageList
-#Disable-PSRemoting -force
+Disable-PSRemoting -force
 
 # Delete the artifactInstaller user
 $cn.Delete("User", $userName)
