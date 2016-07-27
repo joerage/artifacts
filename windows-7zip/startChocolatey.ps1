@@ -44,13 +44,10 @@ $command = ".\ChocolateyPackageInstaller.ps1"
 
 $varia = '@{TrustedHosts="' +  $env:COMPUTERNAME + '"}' 
 winrm s winrm/config/client $varia 
-#reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
-#winrm quickconfig
-#$farmSvcAccSession = New-PSSession -Credential $credential;  
+reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+winrm quickconfig
 # Run Chocolatey as the artifactInstaller user
 Enable-PSRemoting –force
-#Start-Process powershell.exe -Credential $credential -FilePath $command -NoNewWindow -ArgumentList $packageList
-#Invoke-Command -Session $farmSvcAccSession -FilePath $command -ArgumentList $packageList
 Invoke-Command -FilePath $command -Credential $credential -ComputerName $env:COMPUTERNAME -ArgumentList $packageList
 Disable-PSRemoting -force
 
