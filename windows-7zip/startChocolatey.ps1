@@ -25,9 +25,6 @@ $password = Get-TempPassword –length 43 –sourcedata $ascii
 
 $cn = [ADSI]"WinNT://$env:ComputerName"
 
-# Delete the artifactInstaller user
-$cn.Delete("User", $userName)
-
 # Create user
 $user = $cn.Create("User", $userName)
 $user.SetPassword($password)
@@ -45,9 +42,9 @@ $credential = New-Object System.Management.Automation.PSCredential("$env:COMPUTE
 $command = $PSScriptRoot + "\ChocolateyPackageInstaller.ps1"
 
 # Run Chocolatey as the artifactInstaller user
-Enable-PSRemoting –force
+#Enable-PSRemoting –force
 Invoke-Command -FilePath $command -Credential $credential -ComputerName $env:COMPUTERNAME -ArgumentList $packageList
-Disable-PSRemoting -force
+#Disable-PSRemoting -force
 
 # Delete the artifactInstaller user
 $cn.Delete("User", $userName)
