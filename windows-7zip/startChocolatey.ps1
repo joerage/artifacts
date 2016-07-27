@@ -42,8 +42,8 @@ $credential = New-Object System.Management.Automation.PSCredential("$env:COMPUTE
 
 $command = ".\ChocolateyPackageInstaller.ps1"
 
-#$varia = '@{TrustedHosts="' +  $env:COMPUTERNAME + '"}' 
-winrm s winrm/config/client $'@{TrustedHosts="' +  $env:COMPUTERNAME + '"}' 
+$varia = '@{TrustedHosts="' +  $env:COMPUTERNAME + '"}' 
+winrm s winrm/config/client $varia 
 #reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
 #winrm quickconfig
 #$farmSvcAccSession = New-PSSession -Credential $credential;  
