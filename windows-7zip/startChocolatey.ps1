@@ -39,7 +39,7 @@ $group.add("WinNT://$env:ComputerName/$userName")
 $secPassword = ConvertTo-SecureString $password -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential("$env:COMPUTERNAME\$($username)", $secPassword)
 
-$command = $PSScriptRoot + "\ChocolateyPackageInstaller.ps1"
+$command = ".\ChocolateyPackageInstaller.ps1"
 
 # Run Chocolatey as the artifactInstaller user
 #Enable-PSRemoting –force
