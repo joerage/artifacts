@@ -27,7 +27,6 @@ if ($PSVersionTable.PSVersion.Major -lt 3)
     [System.Environment]::Exit(1)
 }
 
-
 $ascii=$NULL;For ($a=33;$a –le 126;$a++) {$ascii+=,[char][byte]$a }
 
 $userName = "artifactInstaller"
@@ -52,7 +51,7 @@ $credential = New-Object System.Management.Automation.PSCredential("$env:COMPUTE
 $command = $PSScriptRoot + "\ChocolateyPackageInstaller.ps1"
 
 # Run Chocolatey as the artifactInstaller user
-Enable-PSRemoting -Force -SkipNetworkProfileCheck
+Enable-PSRemoting –Force -SkipNetworkProfileCheck
 Invoke-Command -FilePath $command -Credential $credential -ComputerName $env:COMPUTERNAME -ArgumentList $packageList
 
 # Delete the artifactInstaller user

@@ -5,17 +5,26 @@
     [string] $packageList
 )
 
-Function Get-TempPassword() {
+Function Get-TempPassword() 
+{
     Param(
-        [int]$length=10,
-        [string[]]$sourcedata
+        [int] $length=10,
+        [string[]] $sourcedata
     )
 
-    For ($loop=1; $loop –le $length; $loop++) {
-            $tempPassword+=($sourcedata | GET-RANDOM)
+    For ($loop=1; $loop –le $length; $loop++) 
+    {
+        $tempPassword+=($sourcedata | GET-RANDOM)
     }
 
     return $tempPassword
+}
+
+# Ensure Powershell 3 or more is installed.
+if ($PSVersionTable.PSVersion.Major -lt 3)
+{
+    Write-Error "Prior to running this artifact, ensure you have Powershell 3 or higher installed."
+    [System.Environment]::Exit(1)
 }
 
 $ascii=$NULL;For ($a=33;$a –le 126;$a++) {$ascii+=,[char][byte]$a }
@@ -39,17 +48,11 @@ $group.add("WinNT://$env:ComputerName/$userName")
 $secPassword = ConvertTo-SecureString $password -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential("$env:COMPUTERNAME\$($username)", $secPassword)
 
+$command = $PSScriptRoot + "\ChocolateyPackageInstaller.ps1"
 
-$command = ".\ChocolateyPackageInstaller.ps1"
-
-$varia = '@{TrustedHosts="' +  $env:COMPUTERNAME + '"}' 
-winrm s winrm/config/client $varia 
-reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
-winrm quickconfig
 # Run Chocolatey as the artifactInstaller user
-Enable-PSRemoting –force
+Enable-PSRemoting –Force -SkipNetworkProfileCheck
 Invoke-Command -FilePath $command -Credential $credential -ComputerName $env:COMPUTERNAME -ArgumentList $packageList
-Disable-PSRemoting -force
 
 # Delete the artifactInstaller user
 $cn.Delete("User", $userName)
