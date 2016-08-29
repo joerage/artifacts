@@ -4,7 +4,6 @@ reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" 
 
 if %OSVERSION%==32BIT (
   Windows6.1-KB2506143-x86.msu /quiet
-)
-else (
+) else (
   Windows6.1-KB2506143-x64.msu /quiet
 )
