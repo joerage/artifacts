@@ -21,9 +21,9 @@ Function Get-TempPassword()
 }
 
 # Ensure Powershell 3 or more is installed.
-if ($PSVersionTable.PSVersion.Major -lt 30)
+if ($PSVersionTable.PSVersion.Major -lt 3)
 {
-    Write-Error "BAD powerhsell version"
+    Write-Error "Prior to running this artifact, ensure you have Powershell 3 or higher installed."
     [System.Environment]::Exit(1)
 }
 
