@@ -23,7 +23,8 @@ Function Get-TempPassword()
 # Ensure Powershell 3 or more is installed.
 if ($PSVersionTable.PSVersion.Major -lt 30)
 {
-    throw "BAD powerhsell version"
+    Write-Error "BAD powerhsell version"
+    [System.Environment]::Exit(1)
 }
 
 
