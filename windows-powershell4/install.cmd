@@ -8,6 +8,7 @@ if %OSVERSION%==32BIT (
   call Windows6.1-KB2506143-x64.msu /quiet /norestart
 )
 
-if %ERRORLEVEL% == 0 (
+REM ErrorLevel means "The requested operation is successful. Changes will not be effective until the system is rebooted."
+if %ERRORLEVEL% == 3010 (
   shutdown.exe /r /t 00
 )
