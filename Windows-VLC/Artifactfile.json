@@ -10,6 +10,8 @@
   "targetOsType": "Windows",
   "runCommand": {
     "commandToExecute": "powershell.exe -File startChocolatey.ps1 -PackageList vlc"
+    "commandToExecute": "powershell.exe -File startChocolatey.ps1 -PackageList vlc"
+
 
   }
 }
